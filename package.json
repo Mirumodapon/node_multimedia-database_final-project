@@ -1,0 +1,21 @@
+{
+  "name": "final-project",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=PRODUCTION node index",
+    "dev": "NODE_ENV=DEV nodemon index --exec \"npm run predev && node\"",
+    "predev": "eslint \"./**\" --fix"
+  },
+  "dependencies": {
+    "config": "^3.3.6",
+    "express": "^4.17.1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "nodemon": "^2.0.15"
+  }
+}
