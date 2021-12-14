@@ -13,4 +13,14 @@ const addNewUser = async (sid, name, password, admin = false) => {
   return result;
 };
 
-module.exports = { addNewUser };
+const getUsers = async () => {
+  const pool = new db.poolConnect();
+  const connection = await pool.connect();
+
+  const result = await pool.sql('SELECT sid, name FROM item_management.users');
+
+  connection.release();
+  return result;
+};
+
+module.exports = { addNewUser, getUsers };
