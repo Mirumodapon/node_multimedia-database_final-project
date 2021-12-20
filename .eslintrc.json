@@ -16,5 +16,5 @@
     "no-empty": "warn",
     "no-unused-vars": "warn"
   },
-  "ignorePatterns": ["node_modules/**", "**/*.json", "test/"]
+  "ignorePatterns": ["node_modules/**", "**/*.json", "test/", "client/"]
 }
