@@ -1,5 +1,15 @@
 const Router = require('express').Router();
 
+Router.get('/:uid', async (req, res) => {
+  try {
+    const result = await req.dbEvent.getSpecificItemsList(req.params.uid);
+    res.status(200).format({ code: 200, result, msg: 'Create Succeed.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).format({ code: 500 });
+  }
+});
+
 Router.get('/', async (req, res) => {
   try {
     const result = await req.dbEvent.getItemsList();

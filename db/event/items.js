@@ -29,4 +29,14 @@ const getItemsList = async () => {
   return result;
 };
 
-module.exports = { addNewItem, getItemsList };
+const getSpecificItemsList = async (uid) => {
+  const pool = new db.poolConnect();
+  const connection = await pool.connect();
+
+  const result = await pool.sql('SELECT * FROM item_management.items WHERE uid=?', uid);
+
+  connection.release();
+  return result;
+};
+
+module.exports = { addNewItem, getItemsList, getSpecificItemsList };
