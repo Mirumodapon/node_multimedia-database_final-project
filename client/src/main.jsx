@@ -12,7 +12,7 @@ ReactDOM.render(
     <Router>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="search" element={<Search />} />
+          <Route path="search/*" element={<Search />} />
           <Route path="return" element={<Return />} />
           <Route path="borrow" element={<Borrow />} />
         </Route>
