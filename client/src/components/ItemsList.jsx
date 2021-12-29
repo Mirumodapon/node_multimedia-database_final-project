@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import getItemsList from '../util/getItemsList';
+import borrowItem from '../util/borrowItem';
 
 function ItemsList() {
   const [list, setList] = useState({});
@@ -31,6 +32,10 @@ function ItemsList() {
 
     if (name && id) {
       console.log(x, name, id);
+      borrowItem({ ...x, name, sid: id })
+        .then((x) => alert(x.status))
+        .then(() => setList({}))
+        .then(() => getItemsList(uid).then((response) => setList(response.data)));
     }
   };
 
@@ -49,7 +54,7 @@ function ItemsList() {
             </thead>
             <tbody>
               {list.result.map((x) => (
-                <tr key={x.no} onClick={() => borrow({ x })} style={{ cursor: 'pointer' }}>
+                <tr key={x.no} onClick={() => borrow(x)} style={{ cursor: 'pointer' }}>
                   <td>{x.no}</td>
                   <td>{status(x.status)}</td>
                   <td>{x.description}</td>

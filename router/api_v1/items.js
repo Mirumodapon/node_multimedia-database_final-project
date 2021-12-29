@@ -33,4 +33,17 @@ Router.post('/', async (req, res) => {
   }
 });
 
+Router.put('/', async (req, res) => {
+  try {
+    const { uid, no, sid, name } = req.body;
+    const result = await req.dbEvent.borrowItem(uid, no, sid, name);
+    res.status(200).format({ code: 200, msg: 'Create Succeed.' });
+  } catch (error) {
+    if (error === 'Can\' find the set') return res.status(400).format({ code: 400 });
+    console.error(error);
+    res.status(500);
+    res.format({ code: 500 });
+  }
+});
+
 module.exports = Router;

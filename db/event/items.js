@@ -1,4 +1,5 @@
 const db = require('..');
+const uuid = require('uuid');
 
 const addNewItem = async (uid, no, status, description, enable = true) => {
   const pool = new db.poolConnect();
@@ -39,4 +40,35 @@ const getSpecificItemsList = async (uid) => {
   return result;
 };
 
-module.exports = { addNewItem, getItemsList, getSpecificItemsList };
+const borrowItem = async (tid, no, sid, name) => {
+  const pool = new db.poolConnect();
+  const connection = await pool.connect();
+
+  const user = await pool.sql('SELECT sid FROM item_management.users WHERE sid=?', sid);
+  if (!user.length) {
+    await pool.sql('INSERT INTO item_management.users (sid, name) VALUES (?, ?)', [sid, name]);
+  }
+
+  const [{ enable }] = await pool.sql(
+    'SELECT enable FROM item_management.items WHERE uid=? AND no=?',
+    [tid, no]
+  );
+
+  if (!enable) throw 'Can not borrow.';
+
+  await pool.sql('UPDATE item_management.items SET status=1, enable=false WHERE uid=? AND no=?', [
+    tid,
+    no
+  ]);
+
+  await pool.sql('INSERT INTO item_management.borrow (bid, sid, tid, no) VALUES (?,?,?,?)', [
+    uuid.v4(),
+    sid,
+    tid,
+    no
+  ]);
+
+  connection.release();
+};
+
+module.exports = { addNewItem, getItemsList, getSpecificItemsList, borrowItem };
